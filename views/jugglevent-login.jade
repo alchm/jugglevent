@@ -1,0 +1,24 @@
+extends navbar-logout
+
+block content
+    div.row
+        div.large-6.columns.large-centered
+            form.custom(action="/login", method="post")
+                fieldset
+                    legend Login
+                    br
+                    div.row.collapse
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="email") Email :
+                        div.small-9.large-9.columns
+                            input(type="email", name="email", id="email")
+                    div.row.collapse
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="password") Password :
+                        div.small-9.large-9.columns
+                            input(type="password", name="password", id="password")
+                    div.row
+                        div.small-6.large-6.columns.large-centered
+                            input.button.secondary.round.expand(type="submit", value="Login")

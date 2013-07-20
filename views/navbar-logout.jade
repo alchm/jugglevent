@@ -1,0 +1,33 @@
+extends layout
+
+block navbar
+    nav.top-bar
+        ul.title-area
+            li.name
+                h1
+                    a(href="/") Juggl'event
+            li.toggle-topbar.menu-icon
+                a(href="#")
+                    span Menu
+        section.top-bar-section
+            ul.right
+                li.divider
+                li
+                    a(href="/") Login
+                li.divider
+                li
+                    a(href="/register") Register
+    - if (message.type == "modal") {
+    div.reveal-modal.medium(id="messageModal")
+        - if (typeof(message.title) !== 'undefined') {
+        h2 #{message.title}
+        - }
+        - if (typeof(message.lead) !== 'undefined') {
+        p.lead #{message.lead}
+        - }
+        - if (typeof(message.body) !== 'undefined') {
+        p #{message.body}
+        - }
+        a.close-reveal-modal x
+    script(type='text/javascript') $("#messageModal").foundation('reveal', 'open');
+    - }

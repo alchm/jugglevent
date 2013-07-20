@@ -1,0 +1,29 @@
+doctype 5
+//if lt IE 7
+  html(class="no-js lt-ie9 lt-ie8 lt-ie7", lang="en")
+//if IE 7
+  html(class="no-js lt-ie9 lt-ie8", lang="en")
+//if IE 8
+  html(class="no-js lt-ie9", lang="en")
+//if gt IE 8
+  html(class="no-js", lang="en")
+
+html
+    head
+        meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width")
+        title= title
+        link(rel="stylesheet", href="/stylesheets/foundation.min.css")
+        link(rel="stylesheet", href="/stylesheets/normalize.css")
+        link(rel="stylesheet", href="/stylesheets/style.css")
+        script(src="/javascripts/vendor/custom.modernizr.js")
+        script(src="/javascripts/vendor/" + ('__proto__' in {} ? 'zepto' : 'jquery') + ".js")
+        script(src="/javascripts/foundation.min.js")
+
+//if lt IE 9
+  script(src="http://html5shiv.googlecode.com/svn/trunk/html5.js")
+body
+    block navbar
+    block content
+
+script(type='text/javascript')$(document).foundation();

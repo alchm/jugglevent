@@ -1,0 +1,43 @@
+extends navbar-connected
+
+block content
+    div.row.clear-20
+        div.large-6.columns
+            form.custom(action="/#{user.username}/account/update", method="post")
+                fieldset
+                    legend User update :
+                    br
+                    div.row.collapse(id="firstnameContainer")
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="firstname") First name :
+                        div.small-9.large-9.columns
+                            input(type="text", name="firstname", id="firstname", value="#{user.firstname.ucwords()}")
+                    div.row.collapse(id="lastnameContainer")
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="lastname") Last name :
+                        div.small-9.large-9.columns
+                            input(type="text", name="lastname", id="lastname", value="#{user.lastname.ucwords()}")
+                    div.row.collapse(id="emailContainer")
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="email") Email :
+                        div.small-9.large-9.columns
+                            input(type="email", name="email", id="email", value="#{user.email}")
+                    div.row.collapse(id="cityContainer")
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="city") City :
+                        div.small-9.large-9.columns
+                            select(name="city", id="city")
+                                option(value="#{userCity._id}") #{userCity.name}
+                                each city in cities
+                                    option(value="#{city._id}") #{city.name}
+                    div.row
+                    div.small-12.large-12.columns
+                        input.success.round.right(type="submit", class="button", value="Save")
+    - if (message.errors) {
+    script(type='text/javascript', src="/javascripts/form-errors.js")
+    script(type='text/javascript') showErrors(!{JSON.stringify(message.errors[0])});
+    - }

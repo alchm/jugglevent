@@ -1,0 +1,57 @@
+extends navbar-logout
+
+block content
+    div.row
+        div.large-6.columns.large-centered
+            form.custom(action="/register/association", method="post")
+                fieldset
+                    legend Register association
+                    br
+                    div.row.collapse(id="cityContainer")
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="city") City :
+                        div.small-9.large-9.columns
+                            select(name="city", id="city")
+                                each city in cities
+                                    option(value="#{city._id}") #{city.name}
+                    div.row.collapse(id="schoolContainer")
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="school") School :
+                        div.small-9.large-9.columns
+                            select(name="school", id="school")
+                                each school in schools
+                                    option(value="#{school._id}") #{school.name}
+                    div.row.collapse(id="nameContainer")
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="name") Organisation name :
+                        div.small-9.large-9.columns
+                            input(type="text", name="name", id="name")
+                    div.row.collapse(id="contactContainer")
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="contact") Contact :
+                        div.small-9.large-9.columns
+                            input(type="email", name="contact", id="contact")
+                    p Connect user :
+                    div.row.collapse(id="emailContainer")
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="email") Email :
+                        div.small-9.large-9.columns
+                            input(type="text", name="email", id="email")
+                    div.row.collapse(id="passwordContainer")
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="password") Password :
+                        div.small-9.large-9.columns
+                            input(type="password", name="password", id="password")
+                    div.row
+                        div.small-12.large-12.columns
+                            input.success.round.expand(type="submit", class="button", value="Create an association")
+    - if (message.errors) {
+    script(type='text/javascript', src="/javascripts/form-errors.js")
+    script(type='text/javascript') showErrors(!{JSON.stringify(message.errors[0])});
+    - }

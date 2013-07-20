@@ -1,0 +1,51 @@
+extends navbar-logout
+
+block content
+    div.row
+        div.large-6.columns.large-centered
+            form.custom(action="/register", method="post")
+                fieldset
+                    legend Register
+                    br
+                    div.row.collapse
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="firstname") First name :
+                        div.small-9.large-9.columns
+                            input(type="text", name="firstname", id="firstname")
+                    div.row.collapse
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="lastname") Last name :
+                        div.small-9.large-9.columns
+                            input(type="text", name="lastname", id="lastname")
+                    div.row.collapse
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="username") Username :
+                        div.small-9.large-9.columns
+                            input(type="text", name="username", id="username")
+                    div.row.collapse
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="email") Email :
+                        div.small-9.large-9.columns
+                            input(type="email", name="email", id="email")
+                    div.row.collapse
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="city") City :
+                        div.small-9.large-9.columns
+                            select(name="city", id="city")
+                                each city in cities
+                                    option(value="#{city._id}") #{city.name}
+                    div.row.collapse
+                        div.small-3.large-3.columns
+                            span.prefix.radius
+                                label(for="password") Password :
+                        div.small-9.large-9.columns
+                            input(type="password", name="password", id="password")
+                    div.row
+                        div.small-12.large-12.columns
+                            input.success.round.expand(type="submit", class="button", value="Register")
+    script(src="/javascripts/register-user.js")

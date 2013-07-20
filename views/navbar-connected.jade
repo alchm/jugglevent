@@ -1,0 +1,49 @@
+extends layout
+
+block navbar
+    div.fixed.clear-10
+        nav.top-bar
+            ul.title-area
+                li.name
+                    h1
+                        a(href="/") Juggl'event
+                li.toggle-topbar.menu-icon
+                    a(href="#")
+                        span Menu
+            section.top-bar-section
+                ul.left
+                ul.right
+                    li.divider
+                    li.has-form
+                        input(type="text", name="search", id="search", placeholder="Search for something")
+                    li.divider
+                    li
+                        a(href="/") Home
+                    li.divider
+                    li.has-dropdown
+                        a(href='/#{user.username}') #{user.firstname.ucwords()} #{user.lastname.ucwords()}
+                        ul.dropdown
+                            li.has-dropdown
+                                a(href='#') Has Dropdown, Level 1
+                                ul.dropdown
+                                    li
+                                        a(href='#') Dropdown Options
+                            li
+                                label Account
+                            li
+                                a(href="/#{user.username}/account") Account
+                                a(href='/logout') Logout
+    - if (message.type == "modal") {
+    div.reveal-modal.medium(id="messageModal")
+        - if (typeof(message.title) !== 'undefined') {
+        h2 #{message.title}
+        - }
+        - if (typeof(message.lead) !== 'undefined') {
+        p.lead #{message.lead}
+        - }
+        - if (typeof(message.body) !== 'undefined') {
+        p #{message.body}
+        - }
+        a.close-reveal-modal x
+    script(type='text/javascript') $("#messageModal").foundation('reveal', 'open');
+    - }
