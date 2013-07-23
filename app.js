@@ -26,7 +26,7 @@ var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     Auth = require('Authentication');
 passport.use(new LocalStrategy(
-    { usernameField: 'email' },
+    { usernameField: 'login' },
     Auth.getAuthenticationStrategy(mongoose)
 ));
 passport.serializeUser(Auth.serializeUser);
@@ -67,6 +67,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
+  app.locals.pretty = true;
 }
 
 //////////
@@ -75,9 +76,10 @@ if ('development' == app.get('env')) {
 
 var Routes = require('./routes/Routes');
 app.set("routes", Routes.toObject());
-var Controller = require('./routes/Controller').init(mongoose, Routes);      //
+var Controller = require('./controllers/Controller').init(mongoose, passport, Routes);      //
 var Middlewares = require('Middlewares'),
     locals = Middlewares.locals,
+    FV_login = Middlewares.loginUserFormValidator,
     FV_registration = Middlewares.registrationFormValidator,
     FV_updateUser = Middlewares.updateUserFormValidator,
     FV_association_registration = Middlewares.associationRegistrationFormValidator;
@@ -113,11 +115,10 @@ app.get( Routes.__USERNAME_ACCOUNT,
          Controller.showUserAccount );
 
 // HTTP POST /login
-app.post( Routes._LOGIN,                    //
-          locals,                           //
-          passport.authenticate( 'local', { successRedirect: Routes._ROOT,            //
-                                            failureRedirect: Routes._ROOT /*,          //
-                                            failureFlash: true*/ }) );       // TODO: Use failure flash?
+app.post( Routes._LOGIN,
+          locals,
+          FV_login,
+          Controller.authUser );
 
 // HTTP POST /register
 app.post( Routes._REGISTER,

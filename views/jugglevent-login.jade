@@ -7,13 +7,13 @@ block content
                 fieldset
                     legend Login
                     br
-                    div.row.collapse
+                    div.row.collapse(id="loginContainer")
                         div.small-3.large-3.columns
                             span.prefix.radius
-                                label(for="email") Email :
+                                label(for="login") Email :
                         div.small-9.large-9.columns
-                            input(type="email", name="email", id="email")
-                    div.row.collapse
+                            input(type="text", name="login", id="login")
+                    div.row.collapse(id="passwordContainer")
                         div.small-3.large-3.columns
                             span.prefix.radius
                                 label(for="password") Password :
@@ -22,3 +22,7 @@ block content
                     div.row
                         div.small-6.large-6.columns.large-centered
                             input.button.secondary.round.expand(type="submit", value="Login")
+    - if (message.errors) {
+    script(type='text/javascript', src="/javascripts/form-errors.js")
+    script(type='text/javascript') showErrors(!{JSON.stringify(message.errors[0])});
+    - }

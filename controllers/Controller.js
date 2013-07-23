@@ -4,13 +4,15 @@
 
 // Use the user API to add, modify, update or delete user
 var mongoose;
+var passport;
 var UserAPI;
 var City;
 var School;
 var AssociationAPI;
 var Routes;
-exports.init = function(dataProvider, routes) {
+exports.init = function(dataProvider, authProvider, routes) {
     mongoose = dataProvider;
+    passport = authProvider;
     UserAPI = require('UserAPI.js').init(dataProvider);
     AssociationAPI = require('AssociationAPI.js').init(dataProvider);
     City = mongoose.model('City');
@@ -68,7 +70,6 @@ exports.showRegisterAssociation = function(req, res) {
                 });
         });
     } else res.redirect(Routes._ROOT);
-    //AssociationAPI.populate("51e9edc56b3396921e000001");
 }
 
 /*
@@ -76,28 +77,69 @@ User page
   */
 exports.showUserDashboard = function(req, res) {
     if (req.user) {
-        //setModalMessage(req, "Welcome !", null, "WELCOME ON YOUR TIMELINE");
-        res.render('user-dashboard');
-    }
-    else res.redirect(Routes._ROOT);
+        if (req.params.username == req.user.username) {
+            res.render('user-dashboard');
+        } else UserAPI.getDashboardData(req, function(err, userData) {
+            if (userData) {
+                if (!err) {
+                    console.log("userData:");
+                    console.log(userData);
+                    res.render('user-public-page', { data: userData });
+                } else console.log(err);
+            } else res.redirect(Routes._ROOT);
+        });
+    } else res.redirect(Routes._ROOT);
 }
 
 /*
 User modification page
   */
 exports.showUserAccount = function(req, res) {
-    if (req.user) City.find({}).ne('_id', req.user.city).exec( function(err, cities) {
-        if (cities) City.findOne({ '_id': req.user.city }, function(err, userCity) {
-            res.render('user-update', { cities : cities,
-                                        userCity : userCity });
-        });
-    });
-    else res.redirect(Routes._ROOT);
+    console.log(req.user);
+    if (req.user) {
+        if (req.user.username == req.params.username) {
+            City.find({}).ne('_id', req.user.city).exec( function(err, cities) {
+                if (cities) {
+                    City.findOne({ '_id': req.user.city }, function(err, userCity) {
+                        res.render('user-account', { cities : cities,
+                                                    userCity : userCity });
+                    });
+                }
+            });
+        } else res.redirect(Routes.generate( Routes.__USERNAME, { ':username': req.params.username } ));
+    }
+    else { console.log('no req user'); res.redirect(Routes._ROOT); }
 }
 
 /////////////
 // Functions
 /////////////   
+
+exports.authUser = function(req, res) {
+    if (!req.user) {
+        if (req.form.isValid) {
+            passport.authenticate('local', function(err, user) {
+                if (!err && user) {
+                    req.logIn(user, function(err) {
+                        if (!err) {
+                            setModalMessage(req, "Welcome !", null, "Welcome on your timeline !");
+                            res.redirect(Routes._ROOT);
+                        } else {
+                            setModalMessage(req, "We're sorry", "ERR_LOGIN", "Unsuccessfull login, please try again :)");
+                            res.redirect(Routes._ROOT);
+                        }
+                    });
+                } else {
+                    setModalMessage(req, "We're sorry", "ERR_AUTH", "Unsuccessfull login, please try again :)");
+                    res.redirect(Routes._ROOT);
+                }
+            })(req,res);
+        } else {
+            setFormErrors(req);
+            res.redirect(Routes._ROOT);
+        }
+    } else { res.redirect(Routes._ROOT); }
+}
 
 /*
 Logout function
@@ -121,19 +163,26 @@ exports.registerUser = function(req, res) {
      It creates a new user using the user API
      Then we redirect to the home page
      */
-    if (!req.user)
+    console.log('user register:');
+    if (!req.user){
+        console.log('user not connected');
         if (req.form.isValid) {
+            console.log('form valid');
             UserAPI.new(req);
             setModalMessage(req, "Success !", null, "Your account have been successfully created !");
             res.redirect(Routes._ROOT);
 
         // If the form is not valid
-        } else  res.redirect(Routes._REGISTER);
+        } else {
+            console.log('form error:');
+            setFormErrors(req);
+            res.redirect(Routes._REGISTER);
+        }
 
     /*
      If a user is logged in, we redirect
      */
-    else res.redirect(Routes._ROOT);
+    } else { consle.log('user connected'); res.redirect(Routes._ROOT); }
 }
 
 /*
@@ -164,10 +213,15 @@ exports.registerAssociation = function(req, res) {
     if (req.user) res.render('you are connected, you cannot already create an association');
     else {
         if (req.form.isValid) {
-            var asso = AssociationAPI.new(req)
-            if (asso)
-                setModalMessage(req, "Success !", null, "Your association have been successfully created");
-            res.redirect(Routes._ROOT);
+            AssociationAPI.new(req, function(err, asso){
+                if (asso) {
+                    setModalMessage(req, "Success !", null, "Your association have been successfully created");
+                    res.redirect(Routes._ROOT);
+                } else {
+                    setModalMessage(req, "We're sorry", null, "We didn't succeeded to perform your registration, please try again or contact and administrator");
+                    res.redirect(Routes._ROOT);
+                }
+            });
         } else {
             setFormErrors(req);
             res.redirect(Routes._REGISTER_ASSOCIATION);

@@ -5,7 +5,7 @@ block content
         div.large-6.columns
             form.custom(action="/#{user.username}/account/update", method="post")
                 fieldset
-                    legend User update :
+                    legend User update
                     br
                     div.row.collapse(id="firstnameContainer")
                         div.small-3.large-3.columns
@@ -36,7 +36,16 @@ block content
                                     option(value="#{city._id}") #{city.name}
                     div.row
                     div.small-12.large-12.columns
-                        input.success.round.right(type="submit", class="button", value="Save")
+                        input.right(type="submit", class="button", value="Save")
+        div.large-6.columns
+            fieldset
+                legend Options
+                br
+                div.switch.radius(id="option")
+                    input(id="x", name="switch-x", type="radio", checked="true")
+                    label(for="x", onclick="") OFF
+                    input(id="x1", name="switch-x", type="radio", checked="true")
+                    label(for="x1", onclick="") ON
     - if (message.errors) {
     script(type='text/javascript', src="/javascripts/form-errors.js")
     script(type='text/javascript') showErrors(!{JSON.stringify(message.errors[0])});

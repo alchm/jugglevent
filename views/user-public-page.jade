@@ -1,0 +1,82 @@
+extends navbar-connected
+
+block content
+    div.row.clear-20
+        div.large-9.columns
+            h3 #{data.firstname} #{data.lastname}
+                span.subheader &nbsp;/&nbsp;#{data.username}
+            p
+                | We'd love to hear from you. You can either reach out to us as a whole and one of our awesome team members will get back to you, or if you have a specific question reach out to one of our staff. We love getting email all day
+            em all day
+                | .
+            div.section-container.tabs(data-section='data-section')
+                section.section
+                    h5.title
+                        a(href='#panel1') Contact Our Company
+                    div.content(data-slug='panel1')
+                        form
+                            div.row.collapse
+                                div.large-2.columns
+                                    label.inline Your Name
+                                div.large-10.columns
+                                    input#yourName(type='text', placeholder='Jane Smith')
+                            div.row.collapse
+                                div.large-2.columns
+                                    label.inline  Your Email
+                                div.large-10.columns
+                                    input#yourEmail(type='text', placeholder='jane@smithco.com')
+                            label What's up?
+                            textarea(rows='4')
+                            button.radius.button(type='submit') Submit
+                section.section
+                    h5.title
+                        a(href='#panel2') Specific Person
+                    div.content(data-slug='panel2')
+                        ul.large-block-grid-5
+                            li
+                                a(href='mailto:mal@serenity.bc.reb')
+                                    img(src='http://placehold.it/200x200&text=[person]')
+                                        | Mal Reynolds
+                            li
+                                a(href='mailto:zoe@serenity.bc.reb')
+                                    img(src='http://placehold.it/200x200&text=[person]')
+                                        | Zoe Washburne
+                            li
+                                a(href='mailto:jayne@serenity.bc.reb')
+                                    img(src='http://placehold.it/200x200&text=[person]')
+                                        | Jayne Cobb
+                            li
+                                a(href='mailto:doc@serenity.bc.reb')
+                                    img(src='http://placehold.it/200x200&text=[person]')
+                                        | Simon Tam
+                            li
+                                a(href='mailto:killyouwithmymind@serenity.bc.reb')
+                                    img(src='http://placehold.it/200x200&text=[person]')
+                                        | River Tam
+                            li
+                                a(href='mailto:leafonthewind@serenity.bc.reb')
+                                    img(src='http://placehold.it/200x200&text=[person]')
+                                        | Hoban Washburne
+                            li
+                                a(href='mailto:book@serenity.bc.reb')
+                                    img(src='http://placehold.it/200x200&text=[person]')
+                                        | Shepherd Book
+                            li
+                                a(href='mailto:klee@serenity.bc.reb')
+                                    img(src='http://placehold.it/200x200&text=[person]')
+                                        | Kaywinnet Lee Fry
+                            li
+                                a(href='mailto:inara@guild.comp.all')
+                                    img(src='http://placehold.it/200x200&text=[person]')
+                                        | Inarra Serra
+        div.large-3.columns
+            h5 Map
+            p
+                a(href='', data-reveal-id='mapModal')
+                    img(src='http://placehold.it/400x280')
+                br
+                a(href='', data-reveal-id='mapModal') View Map
+            p
+                | 123 Awesome St.
+            br
+                | Barsoom, MA 95155
