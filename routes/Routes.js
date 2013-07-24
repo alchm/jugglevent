@@ -1,11 +1,12 @@
-exports._ROOT = "/";
-exports._REGISTER = exports._ROOT + "register";
-exports._REGISTER_ASSOCIATION = exports._REGISTER + "/association";
-exports._LOGIN = exports._ROOT + "login";
-exports._LOGOUT = exports._ROOT + "logout";
-exports.__USERNAME = exports._ROOT + ":username";
-exports.__USERNAME_ACCOUNT = exports.__USERNAME + "/account";
-exports.__USERNAME_ACCOUNT_UPDATE = exports.__USERNAME_ACCOUNT + "/update";
+exports._HOME = "/";
+exports._USER_REGISTER = exports._HOME + "register";
+exports._ASSOCIATION_REGISTER = exports._USER_REGISTER + "/association";
+exports._LOGIN_POST = exports._HOME + "login";
+exports._USER_LOGOUT = exports._HOME + "logout";
+exports.__USER_PROFILE = exports._HOME + ":username";
+exports.__USER_ACCOUNT = exports.__USER_PROFILE + "/account";
+exports.__USER_ACCOUNT_UPDATE = exports.__USER_ACCOUNT + "/update";
+exports.__USER_LANG_UPDATE_POST = exports.__USER_ACCOUNT_UPDATE + "/lang";
 
 exports.generate = function(route, descriptorObject) {
     for (var prop in descriptorObject) {
@@ -18,13 +19,14 @@ exports.generate = function(route, descriptorObject) {
 
 exports.toObject = function() {
 	return {
-		_ROOT : exports._ROOT,
-		_REGISTER : exports._REGISTER,
-        _REGISTER_ASSOCIATION : exports._REGISTER_ASSOCIATION,
-		_LOGIN : exports._LOGIN,
-		_LOGOUT : exports._LOGOUT,
-		__USERNAME : exports.__USERNAME,
-        __USERNAME_ACCOUNT : exports.__USERNAME_ACCOUNT,
-        __USERNAME_ACCOUNT_UPDATE : exports.__USERNAME_ACCOUNT_UPDATE
+		_HOME : exports._HOME,
+		_USER_REGISTER : exports._USER_REGISTER,
+        _ASSOCIATION_REGISTER : exports._ASSOCIATION_REGISTER,
+		_LOGIN_POST : exports._LOGIN_POST,
+		_USER_LOGOUT : exports._USER_LOGOUT,
+		__USER_PROFILE : exports.__USER_PROFILE,
+        __USER_ACCOUNT : exports.__USER_ACCOUNT,
+        __USER_ACCOUNT_UPDATE : exports.__USER_ACCOUNT_UPDATE,
+        __USER_LANG_UPDATE_POST : exports.__USER_LANG_UPDATE_POST
 	}
 }

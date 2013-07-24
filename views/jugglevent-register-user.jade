@@ -3,7 +3,7 @@ extends navbar-logout
 block content
     div.row
         div.large-6.columns
-            form.custom(action="/register", method="post")
+            form.custom(action="#{routes._USER_REGISTER}", method="post")
                 fieldset
                     legend Register
                     br
@@ -51,7 +51,7 @@ block content
         script(src="/javascripts/register-user.js")
         div.large-6.columns
             p Are you an association ? You can
-                a(href="/register/association") &nbsp;create a page&nbsp;
+                a(href="#{routes._ASSOCIATION_REGISTER}") &nbsp;create a page&nbsp;
                 | and start to increase your visibility !
 
     - if (message.errors) {

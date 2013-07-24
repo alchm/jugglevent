@@ -6,10 +6,10 @@ block navbar
             ul.title-area
                 li.name
                     h1
-                        a(href="/") Juggl'event
+                        a(href="#{routes._HOME}") #{labels.globals.navbar_title}
                 li.toggle-topbar.menu-icon
                     a(href="#")
-                        span Menu
+                        span #{labels.globals.navbar_small_menu}
             section.top-bar-section
                 ul.left
                 ul.right
@@ -18,10 +18,10 @@ block navbar
                         input(type="text", name="search", id="search", placeholder="Search for something")
                     li.divider
                     li
-                        a(href="/") Home
+                        a(href="#{routes._HOME}") #{labels.lang.navbar_home_button}
                     li.divider
                     li.has-dropdown
-                        a(href='/#{user.username}') #{user.firstname.ucwords()} #{user.lastname.ucwords()}
+                        a(href="#{routes.generate( routes.__USER_PROFILE, {':username': user.username} )}") #{user.firstname.ucwords()} #{user.lastname.ucwords()}
                         ul.dropdown
                             li.has-dropdown
                                 a(href='#') Has Dropdown, Level 1
@@ -29,10 +29,10 @@ block navbar
                                     li
                                         a(href='#') Dropdown Options
                             li
-                                label Account
+                                label #{labels.lang.navbar_user_account_separator}
                             li
-                                a(href="/#{user.username}/account") Account
-                                a(href='/logout') Logout
+                                a(href="#{routes.generate( routes.__USER_ACCOUNT, {':username': user.username} )}") #{labels.lang.navbar_user_account}
+                                a(href="#{routes._USER_LOGOUT}") #{labels.lang.navbar_user_logout}
     - if (message.type == "modal") {
     div.reveal-modal.medium(id="messageModal")
         - if (typeof(message.title) !== 'undefined') {

@@ -30,7 +30,6 @@ Home page
   */
 exports.home = function(req, res) {
     if (req.user) {
-        //setModalMessage(req, null, null, 'test');
         res.render('jugglevent-timeline');
     }
     else {
@@ -48,7 +47,7 @@ exports.showRegister = function(req, res) {
                 cities: cities
             }); 
         });
-    else res.redirect(Routes._ROOT);
+    else res.redirect(Routes._HOME);
 }
 
 /*
@@ -69,7 +68,7 @@ exports.showRegisterAssociation = function(req, res) {
                         });
                 });
         });
-    } else res.redirect(Routes._ROOT);
+    } else res.redirect(Routes._HOME);
 }
 
 /*
@@ -86,9 +85,9 @@ exports.showUserDashboard = function(req, res) {
                     console.log(userData);
                     res.render('user-public-page', { data: userData });
                 } else console.log(err);
-            } else res.redirect(Routes._ROOT);
+            } else res.redirect(Routes._HOME);
         });
-    } else res.redirect(Routes._ROOT);
+    } else res.redirect(Routes._HOME);
 }
 
 /*
@@ -106,9 +105,9 @@ exports.showUserAccount = function(req, res) {
                     });
                 }
             });
-        } else res.redirect(Routes.generate( Routes.__USERNAME, { ':username': req.params.username } ));
+        } else res.redirect(Routes.generate( Routes.__USER_PROFILE, { ':username': req.params.username } ));
     }
-    else { console.log('no req user'); res.redirect(Routes._ROOT); }
+    else { console.log('no req user'); res.redirect(Routes._HOME); }
 }
 
 /////////////
@@ -123,22 +122,22 @@ exports.authUser = function(req, res) {
                     req.logIn(user, function(err) {
                         if (!err) {
                             setModalMessage(req, "Welcome !", null, "Welcome on your timeline !");
-                            res.redirect(Routes._ROOT);
+                            res.redirect(Routes._HOME);
                         } else {
                             setModalMessage(req, "We're sorry", "ERR_LOGIN", "Unsuccessfull login, please try again :)");
-                            res.redirect(Routes._ROOT);
+                            res.redirect(Routes._HOME);
                         }
                     });
                 } else {
                     setModalMessage(req, "We're sorry", "ERR_AUTH", "Unsuccessfull login, please try again :)");
-                    res.redirect(Routes._ROOT);
+                    res.redirect(Routes._HOME);
                 }
             })(req,res);
         } else {
             setFormErrors(req);
-            res.redirect(Routes._ROOT);
+            res.redirect(Routes._HOME);
         }
-    } else { res.redirect(Routes._ROOT); }
+    } else { res.redirect(Routes._HOME); }
 }
 
 /*
@@ -151,7 +150,7 @@ exports.logout = function(req, res){
      */
     req.session = null;
     req.logout();
-    res.redirect(Routes._ROOT);
+    res.redirect(Routes._HOME);
 };
 
 /*
@@ -170,19 +169,19 @@ exports.registerUser = function(req, res) {
             console.log('form valid');
             UserAPI.new(req);
             setModalMessage(req, "Success !", null, "Your account have been successfully created !");
-            res.redirect(Routes._ROOT);
+            res.redirect(Routes._HOME);
 
         // If the form is not valid
         } else {
             console.log('form error:');
             setFormErrors(req);
-            res.redirect(Routes._REGISTER);
+            res.redirect(Routes._USER_REGISTER);
         }
 
     /*
      If a user is logged in, we redirect
      */
-    } else { consle.log('user connected'); res.redirect(Routes._ROOT); }
+    } else { consle.log('user connected'); res.redirect(Routes._HOME); }
 }
 
 /*
@@ -198,33 +197,55 @@ exports.updateUser = function(req, res) {
         if (req.form.isValid) {
             UserAPI.update(req);
             setModalMessage(req, null, 'User succesfully updated :)', 'You must log you off to reload your informations');
-            res.redirect(Routes.generate( Routes.__USERNAME_ACCOUNT, {":username" : req.user.username} ));
+            res.redirect(Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
         } else {
             setFormErrors(req);
-            res.redirect(Routes.generate( Routes.__USERNAME_ACCOUNT, {":username" : req.user.username} ));
+            res.redirect(Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
         }
-    else res.redirect(Routes._ROOT);
+    else res.redirect(Routes._HOME);
+}
+
+/*
+Save the user language preference
+ */
+exports.updateUserLanguage = function(req, res) {
+    if (req.user) {
+        if (req.form.isValid) {
+            UserAPI.updateLanguage(req, function(err, user) {
+                if (!err) {
+                    setModalMessage(req, "Success !", null, "Your language preference has been successfully saved");
+                    res.redirect( Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
+                } else {
+                    setModalMessage(req, "Error !", "ERR_SAVE", "");
+                    res.redirect( Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
+                }
+            });
+        } else {
+            setFormErrors(req);
+            res.redirect( Routes.generate( Routes.__USER_ACCOUNT_UPDATE, { ":username" : req.user.username} ));
+        }
+    } else res.redirect(Routes._HOME);
 }
 
 /*
 Register a new association
  */
 exports.registerAssociation = function(req, res) {
-    if (req.user) res.render('you are connected, you cannot already create an association');
+    if (req.user) res.send('you are connected, you cannot already create an association');
     else {
         if (req.form.isValid) {
             AssociationAPI.new(req, function(err, asso){
                 if (asso) {
                     setModalMessage(req, "Success !", null, "Your association have been successfully created");
-                    res.redirect(Routes._ROOT);
+                    res.redirect(Routes._HOME);
                 } else {
                     setModalMessage(req, "We're sorry", null, "We didn't succeeded to perform your registration, please try again or contact and administrator");
-                    res.redirect(Routes._ROOT);
+                    res.redirect(Routes._HOME);
                 }
             });
         } else {
             setFormErrors(req);
-            res.redirect(Routes._REGISTER_ASSOCIATION);
+            res.redirect(Routes._ASSOCIATION_REGISTER);
         }
     }
 }

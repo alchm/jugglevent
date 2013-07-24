@@ -9,8 +9,8 @@ require('Miscellaneous').init();
 ///////////////////////
 
 var mongoose = require('mongoose');
-//mongoose.connect('mongodb://baptistegouby.com/jugglevent');
-mongoose.connect('mongodb://localhost/jugglevent');
+mongoose.connect('mongodb://baptistegouby.com/jugglevent');
+//mongoose.connect('mongodb://localhost/jugglevent');
 var Models = require('Models');
 Models.init(mongoose);
 var User = mongoose.model('User');
@@ -82,61 +82,67 @@ var Middlewares = require('Middlewares'),
     FV_login = Middlewares.loginUserFormValidator,
     FV_registration = Middlewares.registrationFormValidator,
     FV_updateUser = Middlewares.updateUserFormValidator,
-    FV_association_registration = Middlewares.associationRegistrationFormValidator;
+    FV_association_registration = Middlewares.associationRegistrationFormValidator,
+    FV_updateUserLang = Middlewares.updateUserLangFormValidator;
 
 // HTTP GET /
-app.get( Routes._ROOT,              // "/"
+app.get( Routes._HOME,              // "/"
          locals,                    // using locals
          Controller.home );         // using home controller
 
 // HTTP GET /logout
-app.get( Routes._LOGOUT,            //
+app.get( Routes._USER_LOGOUT,            //
          locals,                    //
          Controller.logout );       //
 
 // HTTP GET /register
-app.get( Routes._REGISTER,              //
+app.get( Routes._USER_REGISTER,              //
          locals,                        //
          Controller.showRegister );     //
 
 // HTTP GET /register/association
-app.get( Routes._REGISTER_ASSOCIATION,
+app.get( Routes._ASSOCIATION_REGISTER,
          locals,
          Controller.showRegisterAssociation );
 
 // HTTP GET /:username
-app.get( Routes.__USERNAME,
+app.get( Routes.__USER_PROFILE,
          locals,
          Controller.showUserDashboard );
 
 // HTTP GET /:username/account
-app.get( Routes.__USERNAME_ACCOUNT,
+app.get( Routes.__USER_ACCOUNT,
          locals,
          Controller.showUserAccount );
 
 // HTTP POST /login
-app.post( Routes._LOGIN,
+app.post( Routes._LOGIN_POST,
           locals,
           FV_login,
           Controller.authUser );
 
 // HTTP POST /register
-app.post( Routes._REGISTER,
+app.post( Routes._USER_REGISTER,
           locals,
           FV_registration,
           Controller.registerUser );
 
 // HTTP POST /register/association
-app.post( Routes._REGISTER_ASSOCIATION,
+app.post( Routes._ASSOCIATION_REGISTER,
           locals,
           FV_association_registration,
           Controller.registerAssociation );
 
 // HTTP POST /:username/account/update
-app.post( Routes.__USERNAME_ACCOUNT_UPDATE,
+app.post( Routes.__USER_ACCOUNT_UPDATE,
           locals,
           FV_updateUser,
           Controller.updateUser );
+
+app.post( Routes.__USER_LANG_UPDATE_POST,
+          locals,
+          FV_updateUserLang,
+          Controller.updateUserLanguage );
 
 //////////
 // Server

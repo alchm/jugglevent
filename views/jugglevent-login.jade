@@ -3,7 +3,7 @@ extends navbar-logout
 block content
     div.row
         div.large-6.columns.large-centered
-            form.custom(action="/login", method="post")
+            form.custom(action="#{routes._LOGIN_POST}", method="post")
                 fieldset
                     legend Login
                     br
@@ -21,7 +21,7 @@ block content
                             input(type="password", name="password", id="password")
                     div.row
                         div.small-6.large-6.columns.large-centered
-                            input.button.secondary.round.expand(type="submit", value="Login")
+                            input.button.secondary.round.expand(type="submit", value="Log in :)")
     - if (message.errors) {
     script(type='text/javascript', src="/javascripts/form-errors.js")
     script(type='text/javascript') showErrors(!{JSON.stringify(message.errors[0])});

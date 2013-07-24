@@ -5,18 +5,18 @@ block navbar
         ul.title-area
             li.name
                 h1
-                    a(href="/") Juggl'event
+                    a(href="#{routes._HOME}") #{labels.globals.navbar_title}
             li.toggle-topbar.menu-icon
                 a(href="#")
-                    span Menu
+                    span #{labels.globals.navbar_small_menu}
         section.top-bar-section
             ul.right
                 li.divider
                 li
-                    a(href="/") Login
+                    a(href="#{routes._HOME}") Login
                 li.divider
                 li
-                    a(href="/register") Register
+                    a(href="#{routes._USER_REGISTER}") Register
     - if (message.type == "modal") {
     div.reveal-modal.medium(id="messageModal")
         - if (typeof(message.title) !== 'undefined') {
