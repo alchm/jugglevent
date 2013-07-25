@@ -3,7 +3,7 @@ extends navbar-logout
 block content
     div.row
         div.large-6.columns.large-centered
-            form.custom(action="#{routes._REGISTER_ASSOCIATION}", method="post")
+            form.custom(action="#{routes._ASSOCIATION_REGISTER}", method="post")
                 fieldset
                     legend Register association
                     br
@@ -50,7 +50,7 @@ block content
                             input(type="password", name="password", id="password")
                     div.row
                         div.small-12.large-12.columns
-                            input.success.round.expand(type="submit", class="button", value="Create an association")
+                            input.round.expand(type="submit", class="button", value="Create an association")
     - if (message.errors) {
     script(type='text/javascript', src="/javascripts/form-errors.js")
     script(type='text/javascript') showErrors(!{JSON.stringify(message.errors[0])});

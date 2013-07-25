@@ -9,8 +9,8 @@ require('Miscellaneous').init();
 ///////////////////////
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://baptistegouby.com/jugglevent');
-//mongoose.connect('mongodb://localhost/jugglevent');
+//mongoose.connect('mongodb://baptistegouby.com/jugglevent');
+mongoose.connect('mongodb://localhost/jugglevent');
 var Models = require('Models');
 Models.init(mongoose);
 var User = mongoose.model('User');
@@ -25,10 +25,12 @@ mongoose.connection.on('connected', function(){
 var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     Auth = require('Authentication');
-passport.use(new LocalStrategy(
-    { usernameField: 'login' },
-    Auth.getAuthenticationStrategy(mongoose)
-));
+passport.use(
+    new LocalStrategy(
+        { usernameField: 'login' },
+        Auth.getAuthenticationStrategy(mongoose)
+    )
+);
 passport.serializeUser(Auth.serializeUser);
 passport.deserializeUser(Auth.deserializeUser);
 
@@ -39,36 +41,51 @@ passport.deserializeUser(Auth.deserializeUser);
 var express = require('express'),
     http = require('http'),
     path = require('path'),
-    flash = require('connect-flash');
+    flash = require('connect-flash'),
+    RedisStore = require('connect-redis')(express);
+
 var app = express();
+app.configure(function(){
+    app.set('port', process.env.PORT || 8080);
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
 
-app.set('port', process.env.PORT || 8080);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(express.bodyParser());
-var RedisStore = require('connect-redis')(express);
-app.use(express.cookieParser());
-app.use(express.cookieSession({
-    secret: 'jfz979-kj90784-zeizzo---ijfe98',
-    store: new RedisStore
-}));
-app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(app.router);
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.methodOverride());
-app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.bodyParser());
+    app.use(express.cookieParser());
+    app.use(express.cookieSession({ secret: 'jfz979-kj90784-zeizzo---ijfe98',
+                                    store: new RedisStore                       }));
+    app.use(flash());
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.use(app.router);
+    app.use(express.favicon());
+    app.use(express.logger('dev'));
+    app.use(express.methodOverride());
+    app.use(express.static(path.join(__dirname, 'public')));
+
+    ////////////////////
+    // Development only
+    ////////////////////
+
+    if ('development' == app.get('env')) {
+      app.use(express.errorHandler());
+      app.locals.pretty = true;
+    }
+});
+
 
 ////////////////////
-// Development only
+/// SASS
 ////////////////////
+var exec = require("child_process").exec;
 
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-  app.locals.pretty = true;
-}
+exec('sass ' + __dirname + '/public/stylesheets/scss/foundation.scss ' + __dirname + '/public/stylesheets/foundation.css', function (err, stdout, stderr) {
+    console.log('SCSS file compiled - Foundation');
+});
+exec('sass ' + __dirname + '/public/stylesheets/scss/normalize.scss ' + __dirname + '/public/stylesheets/normalize.css', function (err, stdout, stderr) {
+    console.log('SCSS file compiled - Normalize');
+});
+
 
 //////////
 // Routes

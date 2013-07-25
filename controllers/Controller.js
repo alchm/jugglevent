@@ -100,8 +100,11 @@ exports.showUserAccount = function(req, res) {
             City.find({}).ne('_id', req.user.city).exec( function(err, cities) {
                 if (cities) {
                     City.findOne({ '_id': req.user.city }, function(err, userCity) {
-                        res.render('user-account', { cities : cities,
-                                                    userCity : userCity });
+                        UserAPI.getAssociations(req, function(err, data) {
+                            res.render('user-account', { cities : cities,
+                                                         userCity : userCity,
+                                                         associations : data.associations });
+                        });
                     });
                 }
             });

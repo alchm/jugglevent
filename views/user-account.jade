@@ -4,8 +4,9 @@ block content
     div.row.clear-20
         div.small-12.large-12.columns
             div.alert-box.radius.success(data-alert)
-                p Note that you have to log you off to reload your informations. Remember: This a beta, things will be better everyday !
+                p Note that you have to log you off to reload your informations. Remember: This is a beta, things will be better !
                     a.close(href="#") &times;
+    div.row
         div.large-6.columns
             form.custom(action="#{routes.generate( routes.__USER_ACCOUNT_UPDATE, {':username': user.username} )}", method="post")
                 fieldset
@@ -54,6 +55,20 @@ block content
                             select(name="lang", id="lang", onchange="$('#langForm').submit();")
                                 option(value="en") English
                                 option(value="fr") Français
+    div.row
+        div.large-6.columns
+            fieldset
+                legend Admin of :
+                br
+                each a in associations
+                    div.row
+                        div.small-12.large-12.columns
+                            p #{JSON.stringify(a)}
+        div.large-6.columns
+            fieldset
+                legend Following :
+                br
+                p Users and associations you're following
     - if (message.errors) {
     script(type='text/javascript', src="/javascripts/form-errors.js")
     script(type='text/javascript') showErrors(!{JSON.stringify(message.errors[0])});
