@@ -77,14 +77,9 @@ app.configure(function(){
 ////////////////////
 /// SASS
 ////////////////////
-var exec = require("child_process").exec;
-
-exec('sass ' + __dirname + '/public/stylesheets/scss/foundation.scss ' + __dirname + '/public/stylesheets/foundation.css', function (err, stdout, stderr) {
-    console.log('SCSS file compiled - Foundation');
-});
-exec('sass ' + __dirname + '/public/stylesheets/scss/normalize.scss ' + __dirname + '/public/stylesheets/normalize.css', function (err, stdout, stderr) {
-    console.log('SCSS file compiled - Normalize');
-});
+var SASS = require('SASS');
+SASS.compile('foundation');
+SASS.compile('normalize');
 
 
 //////////
