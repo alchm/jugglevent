@@ -231,6 +231,20 @@ exports.updateUserLanguage = function(req, res) {
 }
 
 /*
+ Association profile page
+ */
+exports.showAssociationProfile = function(req, res) {
+    if (req.user) {
+        AssociationAPI.getProfileData(req, function(err, data){
+            if (!err) res.render('association-public', { data: data } );
+            else res.redirect(Routes._HOME);
+        });
+    } else {
+        res.send('you\'re not connected');
+    }
+}
+
+/*
 Register a new association
  */
 exports.registerAssociation = function(req, res) {

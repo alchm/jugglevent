@@ -14,8 +14,11 @@ mongoose.connect('mongodb://localhost/jugglevent');
 var Models = require('Models');
 Models.init(mongoose);
 var User = mongoose.model('User');
-mongoose.connection.on('connected', function(){
-    console.log('Database connected');
+mongoose.connection.on('connected', function() {
+    console.log('MongoDB connected');
+});
+mongoose.connection.on('error', function() {
+    console.log('Unable to connect MongoDB');
 });
 
 //////////////////
@@ -97,25 +100,32 @@ var Middlewares = require('Middlewares'),
     FV_association_registration = Middlewares.associationRegistrationFormValidator,
     FV_updateUserLang = Middlewares.updateUserLangFormValidator;
 
+/****************************
+ *  Route declaration pattern
+ *  app.<method>( Routes.<route-name>,
+ *                middlewares,
+ *                Controller.<action><Who><What> );
+ */
+
 // HTTP GET /
 app.get( Routes._HOME,              // "/"
          locals,                    // using locals
-         Controller.home );         // using home controller
+         Controller.home ); // home -> showUserHome
 
 // HTTP GET /logout
 app.get( Routes._USER_LOGOUT,            //
          locals,                    //
-         Controller.logout );       //
+         Controller.logout ); // logout -> logoutUser
 
 // HTTP GET /register
 app.get( Routes._USER_REGISTER,              //
          locals,                        //
-         Controller.showRegister );     //
+         Controller.showRegister ); // showRegister -> showUserRegister
 
 // HTTP GET /register/association
 app.get( Routes._ASSOCIATION_REGISTER,
          locals,
-         Controller.showRegisterAssociation );
+         Controller.showRegisterAssociation ); // showRegisterAssociation -> showAssociationRegister
 
 // HTTP GET /:username
 app.get( Routes.__USER_PROFILE,
@@ -126,6 +136,11 @@ app.get( Routes.__USER_PROFILE,
 app.get( Routes.__USER_ACCOUNT,
          locals,
          Controller.showUserAccount );
+
+// HTTP GET /association/:name
+app.get( Routes.__ASSOCIATION_PROFILE,
+         locals,
+         Controller.showAssociationProfile );
 
 // HTTP POST /login
 app.post( Routes._LOGIN_POST,

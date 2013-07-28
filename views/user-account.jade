@@ -63,6 +63,7 @@ block content
                 each a in associations
                     div.row
                         div.small-12.large-12.columns
+                            a(href="#{routes.generate( routes.__ASSOCIATION_PROFILE, {':name': a.name})}") #{a.name}
                             p #{JSON.stringify(a)}
         div.large-6.columns
             fieldset
