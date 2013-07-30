@@ -30,6 +30,8 @@ define([
          *                Controller.<action><Who><What> );
          */
 
+        app.get('/app', locals, function(req, res) { res.render('shared/layout'); });
+
         // HTTP GET /
         app.get( Routes._HOME,
                  locals,
@@ -93,8 +95,6 @@ define([
                   locals,
                   FV_updateUserLang,
                   UserController.updateLanguage );
-
-        app.get('/app', locals, function(req, res) { res.render('shared/layout.html'); });
 
     }
 

@@ -8,8 +8,9 @@ requirejs.config({
 
 
 requirejs([ 'http',             // HTTP server
-            'module',
+            'module',           // Module
             'path',             // Path
+            'consolidate',      // Consolidate
             'express',          // Express
             'mongoose',         // Mongoose
             'Models',           // Models
@@ -27,6 +28,7 @@ requirejs([ 'http',             // HTTP server
             function (http,
                       module,
                       path,
+                      consolidate,
                       express,
                       mongoose,
                       Models,
@@ -82,6 +84,8 @@ requirejs([ 'http',             // HTTP server
         app.set('port', process.env.PORT || 9999);
         app.set('views', path.dirname(module.uri) + '/views');
         app.set('view engine', 'jade');
+        /*app.set('view eéngine', 'html');
+        app.engine('html', consolidate.underscore);*/
 
         app.use(express.bodyParser());
         app.use(express.cookieParser());

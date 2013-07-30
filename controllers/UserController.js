@@ -192,12 +192,12 @@ define([
     exports.updateLanguage = function(req, res) {
         if (req.user) {
             if (req.form.isValid) {
-                UserAPI.updateLanguage(req.body, function(err, user) {
+                UserAPI.updateLanguage(req.user._id, req.body, function(err, user) {
                     if (!err) {
                         ModalMessage.setModalMessage(req, "Success !", null, "Your language preference has been successfully saved");
                         res.redirect( Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
                     } else {
-                        ModalMessage.setModalMessage(req, "Error !", "ERR_SAVE", "Ann error occurred, please try again");
+                        ModalMessage.setModalMessage(req, "Error !", err.message, "An error occurred, please try again");
                         res.redirect( Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
                     }
                 });
