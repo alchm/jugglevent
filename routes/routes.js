@@ -98,6 +98,9 @@ define([
                   locals,
                   FV_updateUserLang,
                   UserController.updateLanguage );
+
+        app.get('/app', locals, function(req, res) { res.render('shared/layout.html'); });
+
     }
 
     return exports;

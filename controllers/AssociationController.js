@@ -6,7 +6,7 @@ define([
     'mongoose',
     'api/User',
     'api/Association',
-    '../node_modules/Router',
+    'Router',
     'helpers/FormErrors',
     'helpers/ModalMessage'
 ], function (mongoose, UserAPI, AssociationAPI, Router, FormErrors, ModalMessage) {

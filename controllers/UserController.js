@@ -7,7 +7,7 @@ define([
     'passport',
     'api/User',
     'api/Association',
-    '../node_modules/Router',
+    'Router',
     'helpers/FormErrors',
     'helpers/ModalMessage'
 ], function (mongoose, passport, UserAPI, AssociationAPI, Router, FormErrors, ModalMessage) {
@@ -50,11 +50,9 @@ define([
         if (req.user) {
             if (req.params.username == req.user.username) {
                 res.render('user-dashboard');
-            } else UserAPI.getDashboardData(req, function(err, userData) {
+            } else UserAPI.getDashboardData(req.user, function(err, userData) {
                 if (userData) {
                     if (!err) {
-                        console.log("userData:");
-                        console.log(userData);
                         res.render('user-public-page', { data: userData });
                     } else console.log(err);
                 } else res.redirect(Routes._HOME);
@@ -66,16 +64,15 @@ define([
      User modification page
      */
     exports.showAccount = function(req, res) {
-        console.log(req.user);
         if (req.user) {
             if (req.user.username == req.params.username) {
                 City.find({}).ne('_id', req.user.city).exec( function(err, cities) {
                     if (cities) {
                         City.findOne({ '_id': req.user.city }, function(err, userCity) {
-                            UserAPI.getAssociations(req, function(err, data) {
+                            UserAPI.getAssociations(req.user, function(err, data) {
                                 res.render('user-account', { cities : cities,
-                                    userCity : userCity,
-                                    associations : data.associations });
+                                                             userCity : userCity,
+                                                             associations : data.associations });
                             });
                         });
                     }
@@ -136,18 +133,20 @@ define([
          It creates a new user using the user API
          Then we redirect to the home page
          */
-        console.log('user register:');
         if (!req.user){
-            console.log('user not connected');
             if (req.form.isValid) {
-                console.log('form valid');
-                UserAPI.new(req);
-                ModalMessage.setModalMessage(req, "Success !", null, "Your account have been successfully created !");
-                res.redirect(Routes._HOME);
+                UserAPI.new(req.body, function (err, user) {
+                    if (!err) {
+                        ModalMessage.setModalMessage(req, "Success !", null, "Your account have been successfully created !");
+                        res.redirect(Routes._HOME);
+                    } else {
+                        ModalMessage.setModalMessage(req, "We're sorry", null, "An error occured, please try again");
+                        res.redirect(Routes._USER_REGISTER);
+                    }
+                });
 
                 // If the form is not valid
             } else {
-                console.log('form error:');
                 FormErrors.setFormErrors(req);
                 res.redirect(Routes._USER_REGISTER);
             }
@@ -155,7 +154,7 @@ define([
             /*
              If a user is logged in, we redirect
              */
-        } else { consle.log('user connected'); res.redirect(Routes._HOME); }
+        } else res.redirect(Routes._HOME);
     }
 
     /*
@@ -169,9 +168,15 @@ define([
          */
         if (req.user)
             if (req.form.isValid) {
-                UserAPI.update(req);
-                ModalMessage.setModalMessage(req, null, 'User succesfully updated :)', 'You must log you off to reload your informations');
-                res.redirect(Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
+                UserAPI.update(req.body, function (err, user) {
+                    if (!err) {
+                        ModalMessage.setModalMessage(req, null, 'User succesfully updated :)', 'You must log you off to reload your informations');
+                        res.redirect(Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
+                    } else {
+                        ModalMessage.setModalMessage(req, "We're sorry", null, "An error occured, please try again");
+                        res.redirect(Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
+                    }
+                });
             } else {
                 FormErrors.setFormErrors(req);
                 res.redirect(Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
@@ -185,12 +190,12 @@ define([
     exports.updateLanguage = function(req, res) {
         if (req.user) {
             if (req.form.isValid) {
-                UserAPI.updateLanguage(req, function(err, user) {
+                UserAPI.updateLanguage(req.body, function(err, user) {
                     if (!err) {
                         ModalMessage.setModalMessage(req, "Success !", null, "Your language preference has been successfully saved");
                         res.redirect( Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
                     } else {
-                        ModalMessage.setModalMessage(req, "Error !", "ERR_SAVE", "");
+                        ModalMessage.setModalMessage(req, "Error !", "ERR_SAVE", "Ann error occurred, please try again");
                         res.redirect( Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
                     }
                 });

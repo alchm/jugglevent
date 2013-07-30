@@ -19,7 +19,9 @@ requirejs([ 'http',             // HTTP server
             'Authentication',   // Authentication module
             'connect-redis',    // Redis
             'connect-flash',    // Flash
-            'Router'],
+            'Router',
+            'api/User',
+            'api/Association'],
             function (http,
                       module,
                       path,
@@ -33,7 +35,9 @@ requirejs([ 'http',             // HTTP server
                       redis,
                       flash,
                       Router,
-                      routes) {
+                      routes,
+                      userApi,
+                      associationApi) {
 
     // Express
     var app = express();
