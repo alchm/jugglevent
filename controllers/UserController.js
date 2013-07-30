@@ -170,7 +170,7 @@ define([
          */
         if (req.user)
             if (req.form.isValid) {
-                UserAPI.update(req.body, function (err, user) {
+                UserAPI.update(req.user._id, req.body, function (err, user) {
                     if (!err) {
                         ModalMessage.setModalMessage(req, null, 'User succesfully updated :)', 'You must log you off to reload your informations');
                         res.redirect(Routes.generate( Routes.__USER_ACCOUNT, {":username" : req.user.username} ));
