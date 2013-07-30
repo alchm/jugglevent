@@ -1,0 +1,17 @@
+# Folders #
+###########
+.idea/
+
+# OS Generated Files #
+######################
+.DS_Store
+.DS_Store?
+
+# Logs # 
+########
+*.log
+
+# SASS # 
+########
+*.scssc
+.sass-cache/
