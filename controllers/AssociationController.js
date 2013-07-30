@@ -43,7 +43,7 @@ define([
      */
     exports.showProfile = function(req, res) {
         if (req.user) {
-            AssociationAPI.getProfileData(req, function(err, data){
+            AssociationAPI.getProfileData(req.params.name, function(err, data){
                 if (!err) res.render('association-public.jade', { data: data } );
                 else res.redirect(Routes._HOME);
             });
