@@ -8,11 +8,13 @@ define([
     'api/User',
     'api/Association',
     'Router',
-    'helpers/FormErrors',
-    'helpers/ModalMessage'
+    'controllers/helpers/FormErrors',
+    'controllers/helpers/ModalMessage'
 ], function (mongoose, passport, UserAPI, AssociationAPI, Router, FormErrors, ModalMessage) {
 
     var exports = {};
+
+    console.log(ModalMessage);
 
     var City    = mongoose.model('City'),
         School  = mongoose.model('School'),

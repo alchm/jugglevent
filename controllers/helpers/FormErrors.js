@@ -4,6 +4,8 @@ if (typeof define !== 'function') {
 
 define( function () {
 
+    var exports = {};
+
     exports.setFormErrors = function (req) {
         req.flash('type', "form-errors");
         if (req.form.errors) req.flash('errors', parseFormErrors(req.form.errors));

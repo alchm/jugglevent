@@ -4,6 +4,8 @@ if (typeof define !== 'function') {
 
 define( function () {
 
+    var exports = {};
+
     exports.setModalMessage = function (req,title,lead,body) {
         req.flash('type', "modal");
         if (title !== null) req.flash('title', title);

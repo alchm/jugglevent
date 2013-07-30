@@ -7,8 +7,8 @@ define([
     'api/User',
     'api/Association',
     'Router',
-    'helpers/FormErrors',
-    'helpers/ModalMessage'
+    'controllers/helpers/FormErrors',
+    'controllers/helpers/ModalMessage'
 ], function (mongoose, UserAPI, AssociationAPI, Router, FormErrors, ModalMessage) {
 
     var exports = {};

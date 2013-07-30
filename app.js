@@ -21,7 +21,9 @@ requirejs([ 'http',             // HTTP server
             'connect-flash',    // Flash
             'Router',
             'api/User',
-            'api/Association'],
+            'api/Association',
+            'controllers/helpers/FormErrors',
+            'controllers/helpers/ModalMessage'],
             function (http,
                       module,
                       path,
@@ -37,7 +39,9 @@ requirejs([ 'http',             // HTTP server
                       Router,
                       routes,
                       userApi,
-                      associationApi) {
+                      associationApi,
+                      formErrors,
+                      modalMessage) {
 
     // Express
     var app = express();
