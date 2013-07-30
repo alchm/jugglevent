@@ -25,10 +25,10 @@ define([
      */
     exports.showHome = function(req, res) {
         if (req.user) {
-            res.render('jugglevent-timeline');
+            res.render('jugglevent-timeline.jade');
         }
         else {
-            res.render('jugglevent-login');
+            res.render('jugglevent-login.jade');
         }
     };
 
@@ -38,7 +38,7 @@ define([
     exports.showRegister = function(req, res) {
         if (!req.user)
             City.find({}, function(err, cities) {
-                res.render('jugglevent-register-user', {
+                res.render('jugglevent-register-user.jade', {
                     cities: cities
                 });
             });
@@ -51,11 +51,11 @@ define([
     exports.showDashboard = function(req, res) {
         if (req.user) {
             if (req.params.username == req.user.username) {
-                res.render('user-dashboard');
+                res.render('user-dashboard.jade');
             } else UserAPI.getDashboardData(req.user, function(err, userData) {
                 if (userData) {
                     if (!err) {
-                        res.render('user-public-page', { data: userData });
+                        res.render('user-public-page.jade', { data: userData });
                     } else console.log(err);
                 } else res.redirect(Routes._HOME);
             });
@@ -72,7 +72,7 @@ define([
                     if (cities) {
                         City.findOne({ '_id': req.user.city }, function(err, userCity) {
                             UserAPI.getAssociations(req.user, function(err, data) {
-                                res.render('user-account', { cities : cities,
+                                res.render('user-account.jade', { cities : cities,
                                                              userCity : userCity,
                                                              associations : data.associations });
                             });

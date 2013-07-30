@@ -29,7 +29,7 @@ define([
                 if (!err)
                     School.find({}, function(err, schools) {
                         if (!err)
-                            res.render('jugglevent-register-association', { //
+                            res.render('jugglevent-register-association.jade', { //
                                 cities: cities,                             // Render view
                                 schools: schools                            //
                             });
@@ -44,7 +44,7 @@ define([
     exports.showProfile = function(req, res) {
         if (req.user) {
             AssociationAPI.getProfileData(req, function(err, data){
-                if (!err) res.render('association-public', { data: data } );
+                if (!err) res.render('association-public.jade', { data: data } );
                 else res.redirect(Routes._HOME);
             });
         } else {
