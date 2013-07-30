@@ -59,12 +59,12 @@ define([
         if (req.user) res.send('you are connected, you cannot already create an association');
         else {
             if (req.form.isValid) {
-                AssociationAPI.new(req, function(err, asso){
+                AssociationAPI.new(req.body, function(err, asso){
                     if (asso) {
                         ModalMessage.setModalMessage(req, "Success !", null, "Your association have been successfully created");
                         res.redirect(Routes._HOME);
                     } else {
-                        ModalMessagesetModalMessage(req, "We're sorry", null, "We didn't succeeded to perform your registration, please try again or contact and administrator");
+                        ModalMessage.setModalMessage(req, "We're sorry", null, "We didn't succeeded to perform your registration, please try again or contact and administrator");
                         res.redirect(Routes._HOME);
                     }
                 });
