@@ -45,8 +45,8 @@ requirejs([ 'http',             // HTTP server
 
     // Express
     var app = express();
-    requirejs('Middlewares');
     misc.init();
+    requirejs('Middlewares');
 
     ///////////////////////
     // Database and Models
@@ -79,8 +79,8 @@ requirejs([ 'http',             // HTTP server
         // All environments
         ////////////////////
 
-        app.set('port', process.env.PORT || 8080);
-        app.set('views', module.uri + '/views');
+        app.set('port', process.env.PORT || 9999);
+        app.set('views', path.dirname(module.uri) + '/views');
         app.set('view engine', 'jade');
 
         app.use(express.bodyParser());
@@ -94,7 +94,7 @@ requirejs([ 'http',             // HTTP server
         app.use(express.favicon());
         app.use(express.logger('dev'));
         app.use(express.methodOverride());
-        app.use(express.static(path.join(module.uri, 'public')));
+        app.use(express.static(path.join(path.dirname(module.uri), 'public')));
 
         ////////////////////
         // Development only
