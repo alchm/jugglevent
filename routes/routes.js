@@ -67,6 +67,16 @@ define([
                  locals,
                  AssociationController.showProfile );
 
+        // HTTP GET /association/:name/follow
+        app.get( Routes.__ASSOCIATION_FOLLOW,
+                 locals,
+                 AssociationController.addFollower );
+
+        // HTTP GET /association/:name/unfollow
+        app.get( Routes.__ASSOCIATION_UNFOLLOW,
+                 locals,
+                 AssociationController.removeFollower );
+
         // HTTP POST /login
         app.post( Routes._LOGIN_POST,
                   locals,

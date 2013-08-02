@@ -8,12 +8,12 @@ define([
     'api/Association',
     'Router',
     'controllers/helpers/FormErrors',
-    'controllers/helpers/ModalMessage'
-], function (mongoose, UserAPI, AssociationAPI, Router, FormErrors, ModalMessage) {
-
-    var exports = {};
-
-    var City    = mongoose.model('City'),
+    'controllers/helpers/ModalMessage',
+    'underscore',
+    'async'
+], function (mongoose, UserAPI, AssociationAPI, Router, FormErrors, ModalMessage, _, async) {
+    var exports = {},
+        City    = mongoose.model('City'),
         School  = mongoose.model('School'),
         Routes  = Router.getRoutes();
 
@@ -43,14 +43,61 @@ define([
      */
     exports.showProfile = function(req, res) {
         if (req.user) {
-            AssociationAPI.getProfileData(req.params.name, function(err, data){
-                if (!err) res.render('association-public.jade', { data: data } );
-                else res.redirect(Routes._HOME);
+            AssociationAPI.getProfileData(req.params.name, function (err, data) {
+                if (!err) {
+                    if (data) {
+                        async.waterfall([
+                            function (callback) {
+                                var pluck = _.pluck(data.followers, 'username');
+                                callback(null, pluck);
+                            },
+                            function (pluck, callback) {
+                                var isFollowing = _.contains(pluck, req.user.username);
+                                callback(null, isFollowing);
+                            }
+                        ], function (err, isFollowing) {
+                            data.isFollowing = isFollowing;
+                            res.render('association-public.jade', { data: data });
+                        });
+                    }
+                } else res.redirect(Routes._HOME);
             });
         } else {
             res.send('you\'re not connected');
         }
     };
+
+    /*
+     Add a new follower
+     */
+    exports.addFollower = function (req, res) {
+        if (req.user) {
+            AssociationAPI.addFollower(req.params.name, req.user._id, function (err) {
+                if (!err) {
+                    res.redirect(Router.generate( Routes.__ASSOCIATION_PROFILE, { ':name': req.params.name } ));
+                } else {
+                    // TODO: ModalMessage.setModalMessage() -> ModalMessage.set();
+                    ModalMessage.setModalMessage(req, "We're sorry", null, "An error occurred while adding you as follower");
+                    res.redirect(Router.generate( Routes.__ASSOCIATION_PROFILE, { ':name': req.params.name } ));
+                }
+            });
+        } else res.redirect(Routes._HOME);
+    };
+
+    /*
+     Remove a follower
+     */
+    exports.removeFollower = function (req, res) {
+        if (req.user) {
+            AssociationAPI.removeFollower(req.params.name, req.user._id, function (err) {
+                if (!err) res.redirect(Router.generate( Routes.__ASSOCIATION_PROFILE, { ':name': req.params.name } ));
+                else {
+                    ModalMessage.setModalMessage(req, "We're sorry", null, "An error occurred while removing you as follower");
+                    res.redirect(Router.generate( Routes.__ASSOCIATION_PROFILE, { ':name': req.params.name } ));
+                }
+            });
+        } else res.redirect(Routes._HOME);
+    }
 
     /*
      Register a new association

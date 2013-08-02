@@ -11,6 +11,7 @@ requirejs([ 'http',             // HTTP server
             'module',           // Module
             'path',             // Path
             'consolidate',      // Consolidate
+            'underscore',       // Underscore.js
             'express',          // Express
             'mongoose',         // Mongoose
             'Models',           // Models
@@ -29,6 +30,7 @@ requirejs([ 'http',             // HTTP server
                       module,
                       path,
                       consolidate,
+                      underscore,
                       express,
                       mongoose,
                       Models,
@@ -85,7 +87,7 @@ requirejs([ 'http',             // HTTP server
         app.set('views', path.dirname(module.uri) + '/views');
         app.set('view engine', 'jade');
         app.set('view engine', 'html');
-        app.engine('html', consolidate.underscore);
+        app.engine('html', consolidate.underscore); // using underscore.js template engine with consolidate
 
         app.use(express.bodyParser());
         app.use(express.cookieParser());

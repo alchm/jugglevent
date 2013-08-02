@@ -65,7 +65,7 @@ define([
     /*
      User modification page
      */
-    exports.showAccount = function(req, res) {
+    exports.showAccount = function (req, res) {
         if (req.user) {
             if (req.user.username == req.params.username) {
                 City.find({}).ne('_id', req.user.city).exec( function(err, cities) {

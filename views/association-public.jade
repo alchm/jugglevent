@@ -20,12 +20,14 @@ block content
                     div.content(data-section-content)
                         p SECTION 2
         div.large-3.columns
-            h5 Map
-            p
-                a(href='', data-reveal-id='mapModal')
-                    img(src='http://placehold.it/400x280')
-                br
-                a(href='', data-reveal-id='mapModal') View Map
+            h5 Followers
+            - if (data.isFollowing) {
+                a.button.alert(href="#{routes.generate( routes.__ASSOCIATION_UNFOLLOW, { ':name': data.name } )}") Unfollow
+            - } else {
+                a.button.success(href="#{routes.generate( routes.__ASSOCIATION_FOLLOW, { ':name': data.name } )}") Follow
+            - }
+            p nbFollowers : #{data.nbFollowers}
+            p #{JSON.stringify(data.followers)}
             p
                 | 123 Awesome St.
                 br
