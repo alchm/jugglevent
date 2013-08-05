@@ -1,14 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class=" js no-touch svg inlinesvg svgclippaths no-ie8compat">
 <head>
 	<title>
-		App backbone
+		Juggl'event
 	</title>
+	
+	<link rel="stylesheet" href="/stylesheets/build/style.css">
+
 </head>
 <body>
 
+	<div class="fixed clear-10">
+		<nav class="top-bar" style="">
+			<ul class="title-area">
+				<li class="name">
+					<h1>
+						<a href="/">Juggl'event</a>
+					</h1>
+				</li>
+				<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+			</ul>
+
+			<section class="top-bar-section">
+				<ul class="left"></ul>
+				<ul class="right">
+					<li class="divider"></li>
+					<li class="has-form">
+						<input type="text" name="search" id="search" placeholder="Search for something">
+					</li>
+					<li class="divider"></li>
+					<li class=""><a href="/">Accueil</a></li>
+					<li class="divider"></li>
+					<li class="has-dropdown not-click">
+						<a href="/Allan.Bettarel">Allan Bettarel</a>
+							<ul class="dropdown">
+								<li class="title back js-generated">
+									<h5>
+										<a href="#">« Back</a>
+									</h5>
+								</li>
+								<li class="">
+									<a class="parent-link js-generated" href="/Allan.Bettarel">Allan Bettarel</a>
+								</li>
+								<li class="has-dropdown not-click">
+									<a href="#">Has Dropdown, Level 1</a>
+									<ul class="dropdown">
+										<li class="title back js-generated">
+											<h5>
+												<a href="#">« Back</a>
+											</h5>
+										</li>
+										<li class="">
+											<a href="#">Dropdown Options</a>
+										</li>
+									</ul>
+								</li>
+								<li class="">
+								<label>Gestion</label>
+							</li>
+							<li class="">
+								<a href="/Allan.Bettarel/account">Profil</a>
+								<a href="/logout">Déconnection</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+		</nav>
+	</div>
+
 
 	<script src="/javascripts/vendor/require.js" data-main="/javascripts/app/config.js" type="text/javascript"></script>
-
 </body>
 </html>
