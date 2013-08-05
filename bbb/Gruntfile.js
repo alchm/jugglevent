@@ -23,7 +23,7 @@ module.exports = function(grunt) {
 
       compile: {
         files: {
-          '../public/stylesheets/build/style.css' : ['../public/stylesheets/scss/foundation.scss']
+          '../public/stylesheets/build/style.css' : ['../public/stylesheets/scss/global.scss']
         }
       }
     }, 
