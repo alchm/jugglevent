@@ -11,7 +11,6 @@ requirejs([ 'http',             // HTTP server
             'module',           // Module
             'path',             // Path
             'consolidate',      // Consolidate
-            'underscore',       // Underscore.js
             'express',          // Express
             'mongoose',         // Mongoose
             'Models',           // Models
@@ -21,16 +20,12 @@ requirejs([ 'http',             // HTTP server
             'Authentication',   // Authentication module
             'connect-redis',    // Redis
             'connect-flash',    // Flash
-            'Router',
-            'api/User',
-            'api/Association',
-            'controllers/helpers/FormErrors',
-            'controllers/helpers/ModalMessage'],
+            'routes/routes',
+            'SASS'],
             function (http,
                       module,
                       path,
                       consolidate,
-                      underscore,
                       express,
                       mongoose,
                       Models,
@@ -40,17 +35,12 @@ requirejs([ 'http',             // HTTP server
                       Auth,
                       redis,
                       flash,
-                      Router,
                       routes,
-                      userApi,
-                      associationApi,
-                      formErrors,
-                      modalMessage) {
+                      SASS) {
 
     // Express
     var app = express();
     misc.init();
-    requirejs('Middlewares');
 
     ///////////////////////
     // Database and Models
@@ -60,10 +50,10 @@ requirejs([ 'http',             // HTTP server
      mongoose.connect('mongodb://localhost/jugglevent');
      //Models.init(mongoose);
      mongoose.connection.on('connected', function() {
-     console.log('MongoDB connected');
+        console.log('MongoDB connected');
      });
      mongoose.connection.on('error', function() {
-     console.log('Unable to connect MongoDB');
+        console.log('Unable to connect MongoDB');
      });
 
     //////////////////
@@ -113,13 +103,14 @@ requirejs([ 'http',             // HTTP server
 
     });
 
-    requirejs('routes/routes').init(app);
+    //requirejs('routes/routes').init(app);
+                routes.init(app);
 
     ////////////////////
     /// SASS
     ////////////////////
 
-    var SASS = require('SASS');
+    ///var SASS = require('SASS');
     SASS.compile('foundation');
     SASS.compile('normalize');
 
