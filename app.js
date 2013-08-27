@@ -8,6 +8,7 @@ requirejs.config({
 
 
 requirejs([ 'http',             // HTTP server
+            'socket.io',        // Socket.io server
             'module',           // Module
             'path',             // Path
             'consolidate',      // Consolidate
@@ -23,6 +24,7 @@ requirejs([ 'http',             // HTTP server
             'routes/routes',
             'SASS'],
             function (http,
+                      socketio,
                       module,
                       path,
                       consolidate,
@@ -103,16 +105,7 @@ requirejs([ 'http',             // HTTP server
 
     });
 
-    //requirejs('routes/routes').init(app);
-                routes.init(app);
-
-    ////////////////////
-    /// SASS
-    ////////////////////
-
-    ///var SASS = require('SASS');
-    SASS.compile('foundation');
-    SASS.compile('normalize');
+    routes.init(app);
 
     /////////////////
     /// Routes
@@ -124,8 +117,14 @@ requirejs([ 'http',             // HTTP server
     // Server
     //////////
 
-    http.createServer(app).listen(app.get('port'), function(){
+    var server = http.createServer(app).listen(app.get('port'), function(){
       console.log('Express server listening on port ' + app.get('port'));
     });
+
+    var io = socketio.listen(server);
+    io.sockets.on('connection', function (socket) {
+      console.log("New user conencted");
+    });
+
 
 });
