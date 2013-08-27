@@ -105,16 +105,7 @@ requirejs([ 'http',             // HTTP server
 
     });
 
-    //requirejs('routes/routes').init(app);
-                routes.init(app);
-
-    ////////////////////
-    /// SASS
-    ////////////////////
-
-    ///var SASS = require('SASS');
-    SASS.compile('foundation');
-    SASS.compile('normalize');
+    routes.init(app);
 
     /////////////////
     /// Routes
