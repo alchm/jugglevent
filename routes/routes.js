@@ -32,6 +32,10 @@ define([
 
         app.get('/app', locals, function(req, res) { res.render('shared/layout'); });
 
+        app.get('/app/timeline', locals, function(req, res) { res.render('shared/layout'); });
+
+        app.get('/app/dashboard', locals, function(req, res) { res.render('shared/layout'); });
+
         // HTTP GET /
         app.get( Routes._HOME,
                  locals,
