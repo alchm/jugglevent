@@ -22,23 +22,23 @@ requirejs([ 'http',             // HTTP server
             'connect-redis',    // Redis
             'connect-flash',    // Flash
             'routes/routes',
-            'SASS'],
-            function (http,
-                      socketio,
-                      module,
-                      path,
-                      consolidate,
-                      express,
-                      mongoose,
-                      Models,
-                      misc,
-                      passport,
-                      passportLocal,
-                      Auth,
-                      redis,
-                      flash,
-                      routes,
-                      SASS) {
+            'routes/sockets'  ],
+            function (  http,
+                        socketio,
+                        module,
+                        path,
+                        consolidate,
+                        express,
+                        mongoose,
+                        Models,
+                        misc,
+                        passport,
+                        passportLocal,
+                        Auth,
+                        redis,
+                        flash,
+                        routes,
+                        sockets       ) {
 
     // Express
     var app = express();
@@ -82,7 +82,7 @@ requirejs([ 'http',             // HTTP server
         app.engine('html', consolidate.underscore); // using underscore.js template engine with consolidate
 
         app.use(express.bodyParser());
-        app.use(express.cookieParser());
+        app.use(express.cookieParser("jfz979-kj90784-zeizzo---ijfe98"));
         app.use(express.cookieSession({ secret: 'jfz979-kj90784-zeizzo---ijfe98',
                                         store: new RedisStore                       }));
         app.use(flash());
@@ -104,14 +104,7 @@ requirejs([ 'http',             // HTTP server
         }
 
     });
-
     routes.init(app);
-
-    /////////////////
-    /// Routes
-    /////////////////
-
-
 
     //////////
     // Server
@@ -121,10 +114,9 @@ requirejs([ 'http',             // HTTP server
       console.log('Express server listening on port ' + app.get('port'));
     });
 
-    var io = socketio.listen(server);
-    io.sockets.on('connection', function (socket) {
-      console.log("New user conencted");
-    });
-
+    /////////////
+    // Socket.io
+    /////////////
+    sockets.init( socketio.listen(server) );
 
 });

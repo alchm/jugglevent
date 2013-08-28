@@ -12,11 +12,8 @@ define([
     'controllers/helpers/ModalMessage'
 ], function (mongoose, passport, UserAPI, AssociationAPI, Router, FormErrors, ModalMessage) {
 
-    var exports = {};
-
-    console.log(ModalMessage);
-
-    var City    = mongoose.model('City'),
+    var exports = {},
+        City    = mongoose.model('City'),
         School  = mongoose.model('School'),
         Routes  = Router.getRoutes();
 
@@ -94,7 +91,7 @@ define([
                     if (!err && user) {
                         req.logIn(user, function(err) {
                             if (!err) {
-                                ModalMessage.setModalMessage(req, "Welcome !", null, "Welcome on your timeline !");
+                                
                                 res.redirect(Routes._HOME);
                             } else {
                                 ModalMessage.setModalMessage(req, "We're sorry", "ERR_LOGIN", "Unsuccessfull login, please try again :)");
